@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 129862751}
+  playerSpeed: 9
 --- !u!95 &129862751 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8578576931202442020, guid: cea66af9dab29d542874d6e14686062f,
