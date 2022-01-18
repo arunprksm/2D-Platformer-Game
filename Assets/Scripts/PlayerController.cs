@@ -30,14 +30,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //isGrounded = Physics2D.OverlapCircle(feetPosition.position, checkRadius, whatGround);
         playerHorizontal = Input.GetAxisRaw("Horizontal");
 
         PlayerJump();
         PlayerMovement(playerHorizontal);
         PlayerFlip(playerHorizontal);
-
         PlayerCrouch();
     }
+
     void PlayerMovement(float playerHorizontal)
     {
         Vector3 playerMovement = transform.position;
@@ -59,11 +60,11 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded == true && Input.GetKeyDown(KeyCode.Space))
         {
-            //jump = true;
+            jump = true;
             isJumping = true;
             jumpTimeCounter = jumpTime;
             rb.velocity = Vector2.up * playerJumpValue;
-            //animator.SetBool("Jump", jump);
+            animator.SetBool("Jump", jump);
         }
         else
         {
@@ -95,7 +96,7 @@ public class PlayerController : MonoBehaviour
     }
     void PlayerCrouch()
     {
-        if (Input.GetKey(KeyCode.C))
+        if (Input.GetKey(KeyCode.C) && isGrounded == true)
         {
             crouch = true;
             animator.SetBool("Crouch", crouch);
