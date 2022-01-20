@@ -111,6 +111,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c476985fb9af3ff4aafceffed501e06a, type: 3}
   - {fileID: 21300000, guid: 6de87e9f00722e74d9fc96304b8f1a3d, type: 3}
   - {fileID: 21300000, guid: 1c64f7cfb7bf99d48abddaeb45da9704, type: 3}
+  - {fileID: 21300000, guid: 94f6e6ef133c2fc4d978f8e13f22331e, type: 3}
   m_PackedSpriteNamesToIndex:
   - ChomperWalk_00011
   - ChomperDEATH_Paint_03
@@ -174,6 +175,7 @@ SpriteAtlas:
   - ChomperIdle_00057
   - ChomperIdle_00053
   - ChomperDEATH_Paint_11
+  - ChomperDEATH_Paint_01
   m_RenderDataMap: {}
   m_Tag: ChomperAtlas
   m_IsVariant: 0
