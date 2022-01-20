@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 8578576931202442020}
+  die: {fileID: 0}
   playerSpeed: 9
   playerJumpValue: 20
   isGrounded: 0

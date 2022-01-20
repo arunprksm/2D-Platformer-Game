@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -7,9 +5,13 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     Rigidbody2D rb;
 
+    public GameObject die;
+
     float playerHorizontal;
     public float playerSpeed;
     public float playerJumpValue;
+
+    bool playerAlive;
 
     public bool isGrounded;
     public Transform feetPosition;
@@ -20,17 +22,18 @@ public class PlayerController : MonoBehaviour
     public float jumpTime;
     bool isJumping;
 
-    bool crouch, jump;
+    bool crouchAnimation, jumpAnimation, deathAnimation;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerAlive = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
         playerHorizontal = Input.GetAxisRaw("Horizontal");
 
         PlayerJump();
@@ -39,23 +42,33 @@ public class PlayerController : MonoBehaviour
         PlayerCrouch();
     }
 
+    bool playerIsAlive()
+    {
+        if (playerAlive == true) return true;
+        else return false;
+    }
+
     void PlayerMovement(float playerHorizontal)
     {
-        if(PlayerCrouch()== false)
+        if (PlayerCrouch() == false && playerAlive == true)
         {
-            Vector3 playerMovement = transform.position;
+            Vector2 playerMovement = transform.position;
             playerMovement.x += playerHorizontal * playerSpeed * Time.deltaTime;
             transform.position = playerMovement;
         }
-       
+
     }
     void PlayerFlip(float playerHorizontal)
     {
-        animator.SetFloat("Speed", Mathf.Abs(playerHorizontal));
-        Vector3 playerFlip = transform.localScale;
-        if (playerHorizontal < 0) playerFlip.x = -1f * Mathf.Abs(playerFlip.x);
-        else if (playerHorizontal > 0) playerFlip.x = Mathf.Abs(playerFlip.x);
-        transform.localScale = playerFlip;
+        if (playerIsAlive()== true)
+        {
+            animator.SetFloat("Speed", Mathf.Abs(playerHorizontal));
+
+            Vector2 playerFlip = transform.localScale;
+            if (playerHorizontal < 0) playerFlip.x = -1f * Mathf.Abs(playerFlip.x);
+            else if (playerHorizontal > 0) playerFlip.x = Mathf.Abs(playerFlip.x);
+            transform.localScale = playerFlip;
+        }
     }
 
     void PlayerJump()
@@ -64,17 +77,17 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded == true && Input.GetKeyDown(KeyCode.Space))
         {
-            jump = true;
+            jumpAnimation = true;
             isJumping = true;
             jumpTimeCounter = jumpTime;
 
             rb.velocity = Vector2.up * playerJumpValue;
-            animator.SetBool("Jump", jump);
+            animator.SetBool("Jump", jumpAnimation);
         }
         else
         {
-            jump = false;
-            animator.SetBool("Jump", jump);
+            jumpAnimation = false;
+            animator.SetBool("Jump", jumpAnimation);
         }
 
         if (Input.GetKey(KeyCode.Space) && isJumping == true)
@@ -83,8 +96,8 @@ public class PlayerController : MonoBehaviour
             {
                 rb.velocity = Vector2.up * playerJumpValue;
                 jumpTimeCounter -= Time.deltaTime;
-                jump = true;
-                animator.SetBool("Jump", jump);
+                jumpAnimation = true;
+                animator.SetBool("Jump", jumpAnimation);
             }
             else
             {
@@ -94,25 +107,34 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            jump = false;
+            jumpAnimation = false;
             isJumping = false;
-            animator.SetBool("Jump", jump);
+            animator.SetBool("Jump", jumpAnimation);
         }
     }
     bool PlayerCrouch()
     {
         if (Input.GetKey(KeyCode.C) && isGrounded == true)
         {
-            crouch = true;
-            animator.SetBool("Crouch", crouch);
+            crouchAnimation = true;
+            animator.SetBool("Crouch", crouchAnimation);
             return true;
         }
         else
         {
-            crouch = false;
-            animator.SetBool("Crouch", crouch);
+            crouchAnimation = false;
+            animator.SetBool("Crouch", crouchAnimation);
             return false;
         }
+    }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            deathAnimation = true;
+            animator.SetBool("Death", deathAnimation);
+            playerAlive = false;
+        }
     }
 }

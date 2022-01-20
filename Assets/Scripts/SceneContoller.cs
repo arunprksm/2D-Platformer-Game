@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +5,7 @@ public class SceneContoller : MonoBehaviour
 {
 
     public GameObject sceneObject;
+    public string sceneName;
 
     private void Start()
     {
@@ -15,13 +14,14 @@ public class SceneContoller : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        
+
         if (collision.gameObject.GetComponent<PlayerController>() != null)
         {
             sceneObject.SetActive(true);
-            if(sceneObject.activeInHierarchy == true && Input.GetKeyDown(KeyCode.E))
+            //if(sceneObject.activeInHierarchy == true && Input.GetButton("Interact"))
+            if (sceneObject.activeInHierarchy == true && Input.GetKey(KeyCode.E))
             {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(sceneName);
             }
         }
     }
