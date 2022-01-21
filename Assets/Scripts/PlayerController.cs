@@ -3,10 +3,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public ScoreController scoreController;
+
     public Animator animator;
+    
     Rigidbody2D rb;
 
-    public GameObject die;
+
+    //public GameObject die;
 
     float playerHorizontal;
     public float playerSpeed;
@@ -130,9 +134,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    internal bool PickUpKey()
+    internal void PickUpKey()
     {
-        return true;
+        scoreController.IncrementScore(10);
     }
 
     void OnCollisionEnter2D(Collision2D collision)

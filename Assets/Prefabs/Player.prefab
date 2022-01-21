@@ -195,10 +195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10aa05babfa34024fa930d558b22f33f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreController: {fileID: 0}
   animator: {fileID: 8578576931202442020}
-  die: {fileID: 0}
   playerSpeed: 9
-  playerJumpValue: 20
+  playerJumpValue: 15
   isGrounded: 0
   feetPosition: {fileID: 833933137}
   checkRadius: 0.3
