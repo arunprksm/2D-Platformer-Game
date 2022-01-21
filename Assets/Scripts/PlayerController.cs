@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -19,10 +20,11 @@ public class PlayerController : MonoBehaviour
     public LayerMask whatGround;
 
     float jumpTimeCounter;
+    
     public float jumpTime;
     bool isJumping;
-
     bool crouchAnimation, jumpAnimation, deathAnimation;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +44,7 @@ public class PlayerController : MonoBehaviour
         PlayerCrouch();
     }
 
-    bool playerIsAlive()
+    bool PlayerIsAlive()
     {
         if (playerAlive == true) return true;
         else return false;
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
 
     void PlayerMovement(float playerHorizontal)
     {
-        if (PlayerCrouch() == false && playerAlive == true)
+        if (PlayerIsAlive() == true && PlayerCrouch() == false)
         {
             Vector2 playerMovement = transform.position;
             playerMovement.x += playerHorizontal * playerSpeed * Time.deltaTime;
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour
     }
     void PlayerFlip(float playerHorizontal)
     {
-        if (playerIsAlive()== true)
+        if (PlayerIsAlive()== true)
         {
             animator.SetFloat("Speed", Mathf.Abs(playerHorizontal));
 
@@ -77,10 +79,10 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded == true && Input.GetKeyDown(KeyCode.Space))
         {
-            jumpAnimation = true;
             isJumping = true;
             jumpTimeCounter = jumpTime;
 
+            jumpAnimation = true;
             rb.velocity = Vector2.up * playerJumpValue;
             animator.SetBool("Jump", jumpAnimation);
         }
@@ -126,6 +128,11 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Crouch", crouchAnimation);
             return false;
         }
+    }
+
+    internal bool PickUpKey()
+    {
+        return true;
     }
 
     void OnCollisionEnter2D(Collision2D collision)

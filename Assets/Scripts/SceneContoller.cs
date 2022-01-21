@@ -18,6 +18,7 @@ public class SceneContoller : MonoBehaviour
         if (collision.gameObject.GetComponent<PlayerController>() != null)
         {
             sceneObject.SetActive(true);
+
             //if(sceneObject.activeInHierarchy == true && Input.GetButton("Interact"))
             if (sceneObject.activeInHierarchy == true && Input.GetKey(KeyCode.E))
             {
