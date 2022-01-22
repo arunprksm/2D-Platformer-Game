@@ -9,10 +9,21 @@ public class PlayerController : MonoBehaviour
     
     Rigidbody2D rb;
 
+    public float SpeedProperty 
+    { 
+        get 
+        { 
+            return playerSpeed;
+        } 
+        set 
+        {
+            SetPlayerSpeed(value);
+        }
+    }
 
     //public GameObject die;
 
-    float playerHorizontal;
+    [SerializeField] private float playerHorizontal;
     public float playerSpeed;
     public float playerJumpValue;
 
@@ -29,34 +40,50 @@ public class PlayerController : MonoBehaviour
     bool isJumping;
     bool crouchAnimation, jumpAnimation, deathAnimation;
 
+    bool spacePressed = false;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerAlive = true;
+
+        SetPlayerSpeed(playerSpeed);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        playerHorizontal = Input.GetAxisRaw("Horizontal");
 
+        HandleInput();
         PlayerJump();
         PlayerMovement(playerHorizontal);
         PlayerFlip(playerHorizontal);
         PlayerCrouch();
+
+
+        //if( something happens)
+        //SetPlayerSpeed(playerSpeed);
+    }
+
+    private void HandleInput()
+    {
+        playerHorizontal = Input.GetAxisRaw("Horizontal");
+
+        spacePressed = Input.GetKey(KeyCode.LeftControl);
     }
 
     bool PlayerIsAlive()
     {
-        if (playerAlive == true) return true;
-        else return false;
+        return playerAlive;
+        //if (playerAlive == true) return true;
+        //else return false;
     }
 
     void PlayerMovement(float playerHorizontal)
     {
-        if (PlayerIsAlive() == true && PlayerCrouch() == false)
+        if (PlayerIsAlive() && !PlayerCrouch())
         {
             Vector2 playerMovement = transform.position;
             playerMovement.x += playerHorizontal * playerSpeed * Time.deltaTime;
@@ -66,15 +93,18 @@ public class PlayerController : MonoBehaviour
     }
     void PlayerFlip(float playerHorizontal)
     {
-        if (PlayerIsAlive()== true)
+        //Guard Clause
+        if (!PlayerIsAlive())
         {
-            animator.SetFloat("Speed", Mathf.Abs(playerHorizontal));
-
-            Vector2 playerFlip = transform.localScale;
-            if (playerHorizontal < 0) playerFlip.x = -1f * Mathf.Abs(playerFlip.x);
-            else if (playerHorizontal > 0) playerFlip.x = Mathf.Abs(playerFlip.x);
-            transform.localScale = playerFlip;
+            return;
         }
+
+        animator.SetFloat("Speed", Mathf.Abs(playerHorizontal));
+
+        Vector2 playerFlip = transform.localScale;
+        if (playerHorizontal < 0) playerFlip.x = -1f * Mathf.Abs(playerFlip.x);
+        else if (playerHorizontal > 0) playerFlip.x = Mathf.Abs(playerFlip.x);
+        transform.localScale = playerFlip;
     }
 
     void PlayerJump()
@@ -147,5 +177,27 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Death", deathAnimation);
             playerAlive = false;
         }
+    }
+
+    private void UpdatePlayerSpeedUI(float speedTOShow)
+    {
+        // TextMesh.text = playerSpeed;
+    }
+
+    public void SetPlayerSpeed(float newSpeedValue)
+    {
+        playerSpeed = newSpeedValue;
+        var roundedPlayerSpeed = Mathf.RoundToInt(playerSpeed);
+        UpdatePlayerSpeedUI(roundedPlayerSpeed);
+    }
+
+    public void SetMyProperty(float value)
+    {
+        playerSpeed = value;
+    }
+
+    public float GetMyProeperty()
+    {
+        return playerSpeed;
     }
 }

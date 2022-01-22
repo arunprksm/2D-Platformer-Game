@@ -7,11 +7,14 @@ public class KeyPickUp : MonoBehaviour
     PlayerController playerController;
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<PlayerController>() != null)
+        playerController = collision.gameObject.GetComponent<PlayerController>();
+        if (playerController != null)
         {
-            playerController = collision.gameObject.GetComponent<PlayerController>();
             playerController.PickUpKey();
             Destroy(gameObject);
+
+            playerController.SpeedProperty = 10;
+            playerController.SetPlayerSpeed(10);
         }
     }
 }
