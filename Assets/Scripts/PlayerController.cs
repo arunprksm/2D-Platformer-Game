@@ -4,18 +4,19 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public ScoreController scoreController;
+    public GameObject dieTextObject;
 
     public Animator animator;
-    
+
     Rigidbody2D rb;
 
-    public float SpeedProperty 
-    { 
-        get 
-        { 
+    public float SpeedProperty
+    {
+        get
+        {
             return playerSpeed;
-        } 
-        set 
+        }
+        set
         {
             SetPlayerSpeed(value);
         }
@@ -23,9 +24,12 @@ public class PlayerController : MonoBehaviour
 
     //public GameObject die;
 
-    [SerializeField] private float playerHorizontal;
-    public float playerSpeed;
-    public float playerJumpValue;
+    private float playerHorizontal;
+
+    [SerializeField]
+    private float playerSpeed;
+    [SerializeField]
+    private float playerJumpValue;
 
     bool playerAlive;
 
@@ -35,27 +39,25 @@ public class PlayerController : MonoBehaviour
     public LayerMask whatGround;
 
     float jumpTimeCounter;
-    
+
     public float jumpTime;
     bool isJumping;
     bool crouchAnimation, jumpAnimation, deathAnimation;
 
-    bool spacePressed = false;
+    bool jumpPressed, jumpPressing, jumpPressedReleased, crouchPressed;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerAlive = true;
-
+        dieTextObject.SetActive(false);
         SetPlayerSpeed(playerSpeed);
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
         HandleInput();
         PlayerJump();
         PlayerMovement(playerHorizontal);
@@ -67,18 +69,37 @@ public class PlayerController : MonoBehaviour
         //SetPlayerSpeed(playerSpeed);
     }
 
+
     private void HandleInput()
     {
         playerHorizontal = Input.GetAxisRaw("Horizontal");
 
-        spacePressed = Input.GetKey(KeyCode.LeftControl);
+        jumpPressed = Input.GetKeyDown(KeyCode.Space);
+
+        jumpPressing = Input.GetKey(KeyCode.Space);
+
+        jumpPressedReleased = Input.GetKeyUp(KeyCode.Space);
+
+        crouchPressed = Input.GetKey(KeyCode.C);
     }
+
 
     bool PlayerIsAlive()
     {
         return playerAlive;
         //if (playerAlive == true) return true;
         //else return false;
+    }
+
+    public void SetMyProperty(float value)
+    {
+        playerSpeed = value;
+    }
+    public void SetPlayerSpeed(float newSpeedValue)
+    {
+        playerSpeed = newSpeedValue;
+        var roundedPlayerSpeed = Mathf.RoundToInt(playerSpeed);
+        //UpdatePlayerSpeedUI(roundedPlayerSpeed);
     }
 
     void PlayerMovement(float playerHorizontal)
@@ -89,7 +110,6 @@ public class PlayerController : MonoBehaviour
             playerMovement.x += playerHorizontal * playerSpeed * Time.deltaTime;
             transform.position = playerMovement;
         }
-
     }
     void PlayerFlip(float playerHorizontal)
     {
@@ -111,7 +131,7 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(feetPosition.position, checkRadius, whatGround);
 
-        if (isGrounded == true && Input.GetKeyDown(KeyCode.Space))
+        if (isGrounded == true && jumpPressed)
         {
             isJumping = true;
             jumpTimeCounter = jumpTime;
@@ -126,7 +146,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Jump", jumpAnimation);
         }
 
-        if (Input.GetKey(KeyCode.Space) && isJumping == true)
+        if (jumpPressing && isJumping == true)
         {
             if (jumpTimeCounter > 0)
             {
@@ -141,7 +161,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (jumpPressedReleased)
         {
             jumpAnimation = false;
             isJumping = false;
@@ -150,7 +170,7 @@ public class PlayerController : MonoBehaviour
     }
     bool PlayerCrouch()
     {
-        if (Input.GetKey(KeyCode.C) && isGrounded == true)
+        if (crouchPressed && isGrounded == true)
         {
             crouchAnimation = true;
             animator.SetBool("Crouch", crouchAnimation);
@@ -169,35 +189,43 @@ public class PlayerController : MonoBehaviour
         scoreController.IncrementScore(10);
     }
 
+    internal void KillPlayer()
+    {
+        PlayerDead();
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            deathAnimation = true;
-            animator.SetBool("Death", deathAnimation);
-            playerAlive = false;
+            PlayerDead();
         }
     }
 
-    private void UpdatePlayerSpeedUI(float speedTOShow)
+    void PlayerDead()
     {
-        // TextMesh.text = playerSpeed;
-    }
-
-    public void SetPlayerSpeed(float newSpeedValue)
-    {
-        playerSpeed = newSpeedValue;
-        var roundedPlayerSpeed = Mathf.RoundToInt(playerSpeed);
-        UpdatePlayerSpeedUI(roundedPlayerSpeed);
-    }
-
-    public void SetMyProperty(float value)
-    {
-        playerSpeed = value;
-    }
-
-    public float GetMyProeperty()
-    {
-        return playerSpeed;
+        deathAnimation = true;
+        animator.SetBool("Death", deathAnimation);
+        playerAlive = false;
+        dieTextObject.SetActive(true);
     }
 }
+
+
+
+//private void UpdatePlayerSpeedUI(float speedTOShow)
+//{
+//    // TextMesh.text = playerSpeed;
+//}
+
+
+
+//public void SetMyProperty(float value)
+//{
+//    playerSpeed = value;
+//}
+
+//public float GetMyProeperty()
+//{
+//    return playerSpeed;
+//}
