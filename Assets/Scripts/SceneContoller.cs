@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,7 +6,8 @@ public class SceneContoller : MonoBehaviour
 {
 
     public GameObject sceneObject;
-    public string sceneName;
+    public string nextScene;
+    internal string currentScene;
 
     private void Start()
     {
@@ -22,12 +24,21 @@ public class SceneContoller : MonoBehaviour
             //if(sceneObject.activeInHierarchy == true && Input.GetButton("Interact"))
             if (sceneObject.activeInHierarchy == true && Input.GetKey(KeyCode.E))
             {
-                SceneManager.LoadScene(sceneName);
+                SceneManager.LoadScene(nextScene);
             }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         sceneObject.SetActive(false);
+    }
+
+    public void ReloadScene(string currentScene)
+    {
+        SceneManager.LoadScene(currentScene);
+    }
+    public void MainMenuScene()
+    {
+        SceneManager.LoadScene(0);
     }
 }

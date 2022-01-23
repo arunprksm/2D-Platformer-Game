@@ -1,9 +1,14 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public ScoreController scoreController;
+    public SceneContoller sceneContoller;
+
     public GameObject dieTextObject;
 
     public Animator animator;
@@ -75,9 +80,7 @@ public class PlayerController : MonoBehaviour
         playerHorizontal = Input.GetAxisRaw("Horizontal");
 
         jumpPressed = Input.GetKeyDown(KeyCode.Space);
-
         jumpPressing = Input.GetKey(KeyCode.Space);
-
         jumpPressedReleased = Input.GetKeyUp(KeyCode.Space);
 
         crouchPressed = Input.GetKey(KeyCode.C);
@@ -191,22 +194,24 @@ public class PlayerController : MonoBehaviour
 
     internal void KillPlayer()
     {
-        PlayerDead();
+        StartCoroutine(PlayerDead());
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            PlayerDead();
+            StartCoroutine(PlayerDead());
         }
     }
 
-    void PlayerDead()
+     public IEnumerator PlayerDead()
     {
         deathAnimation = true;
         animator.SetBool("Death", deathAnimation);
         playerAlive = false;
+
+        yield return new WaitForSeconds(2);
         dieTextObject.SetActive(true);
     }
 }
