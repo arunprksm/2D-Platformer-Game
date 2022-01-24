@@ -6,8 +6,8 @@ public class SceneContoller : MonoBehaviour
 {
 
     public GameObject sceneObject;
-    public string nextScene;
-    internal string currentScene;
+    //public string nextScene;
+    
 
     private void Start()
     {
@@ -24,21 +24,30 @@ public class SceneContoller : MonoBehaviour
             //if(sceneObject.activeInHierarchy == true && Input.GetButton("Interact"))
             if (sceneObject.activeInHierarchy == true && Input.GetKey(KeyCode.E))
             {
-                SceneManager.LoadScene(nextScene);
+                NextScene();
             }
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         sceneObject.SetActive(false);
     }
 
-    public void ReloadScene(string currentScene)
-    {
-        SceneManager.LoadScene(currentScene);
-    }
     public void MainMenuScene()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    
+
+    public void NextScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

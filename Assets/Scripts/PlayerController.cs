@@ -7,9 +7,8 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public ScoreController scoreController;
-    public SceneContoller sceneContoller;
 
-    public GameObject dieTextObject;
+    public GameObject gameOverTextObject;
 
     public Animator animator;
 
@@ -56,7 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerAlive = true;
-        dieTextObject.SetActive(false);
+        gameOverTextObject.SetActive(false);
         SetPlayerSpeed(playerSpeed);
     }
 
@@ -68,7 +67,6 @@ public class PlayerController : MonoBehaviour
         PlayerMovement(playerHorizontal);
         PlayerFlip(playerHorizontal);
         PlayerCrouch();
-
 
         //if( something happens)
         //SetPlayerSpeed(playerSpeed);
@@ -205,14 +203,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-     public IEnumerator PlayerDead()
+    public IEnumerator PlayerDead()
     {
         deathAnimation = true;
         animator.SetBool("Death", deathAnimation);
         playerAlive = false;
 
         yield return new WaitForSeconds(2);
-        dieTextObject.SetActive(true);
+        gameOverTextObject.SetActive(true);
     }
 }
 
