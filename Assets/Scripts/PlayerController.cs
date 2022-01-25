@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
         //SetPlayerSpeed(playerSpeed);
     }
 
-
     private void HandleInput()
     {
         playerHorizontal = Input.GetAxisRaw("Horizontal");
