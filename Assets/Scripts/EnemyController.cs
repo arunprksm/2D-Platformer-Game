@@ -28,7 +28,9 @@ public class EnemyController : MonoBehaviour
         if (mustPatorl)
         {
             EnemyPatrol();
+            EnemyChase();
         }
+        
     }
 
     private void FixedUpdate()
@@ -64,5 +66,11 @@ public class EnemyController : MonoBehaviour
         transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
         enemySpeed *= -1;
         mustPatorl = true;
+    }
+
+
+    private void EnemyChase()
+    {
+
     }
 }

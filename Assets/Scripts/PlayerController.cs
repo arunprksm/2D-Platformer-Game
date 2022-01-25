@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
     }
     bool PlayerCrouch()
     {
-        if (crouchPressed && isGrounded == true)
+        if (crouchPressed && isGrounded == true && PlayerIsAlive())
         {
             crouchAnimation = true;
             animator.SetBool("Crouch", crouchAnimation);
