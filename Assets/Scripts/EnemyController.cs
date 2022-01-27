@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     PlayerController playerController;
-    //PlayerHealth playerHealth;
+    PlayerHealth playerHealth;
     private bool mustPatorl;
     private bool mustFlip;
 
@@ -14,13 +14,24 @@ public class EnemyController : MonoBehaviour
     public Transform enemyGroundCheckPos;
     public LayerMask groundLayer;
 
+    public GameObject player;
+    private Transform playerPos;
+    private Vector2 currentPos;
+    [SerializeField] private float playerDistance;
+
     private Rigidbody2D enemyRigidbody2D;
     public Collider2D enemyBodyCollider;
+
+    private Animator enemyAnimator;
 
     private void Start()
     {
         enemyRigidbody2D = GetComponent<Rigidbody2D>();
         mustPatorl = true;
+
+        playerPos = player.GetComponent<Transform>();
+        currentPos = GetComponent<Transform>().position;
+        enemyAnimator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -30,7 +41,6 @@ public class EnemyController : MonoBehaviour
             EnemyPatrol();
             EnemyChase();
         }
-        
     }
 
     private void FixedUpdate()
@@ -46,8 +56,12 @@ public class EnemyController : MonoBehaviour
         if (playerController != null)
         {
             //playerdamage value
-            //playerHealth.TakeDamage(10);
-            playerController.KillPlayer();
+            playerHealth.TakeDamage(10);
+            
+        }
+        if (collision.gameObject.tag == "DeadLimit")
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -71,6 +85,24 @@ public class EnemyController : MonoBehaviour
 
     private void EnemyChase()
     {
-
+        if (Vector2.Distance(transform.position, playerPos.position) < playerDistance)
+        {
+            float chaseSpeed = enemySpeed * 3;
+            enemyRigidbody2D.velocity = new Vector2(chaseSpeed, enemyRigidbody2D.velocity.y);
+            enemyAnimator.SetBool("EnemyRun", true);
+        }
+        else
+        {
+            enemyAnimator.SetBool("EnemyRun", false);
+        }
+        //if (Vector2.Distance(transform.position, currentPos) <= 0)
+        //{
+        //    enemyAnimator.SetBool("EnemyRun", false);
+        //}
+        //else
+        //{
+        //    transform.position = Vector2.MoveTowards(transform.position, currentPos, enemySpeed * Time.deltaTime);
+        //    enemyAnimator.SetBool("EnemyRun", true);
+        //}
     }
 }

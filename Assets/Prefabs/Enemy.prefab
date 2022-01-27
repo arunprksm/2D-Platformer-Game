@@ -156,11 +156,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddef5e6a0b730c4bb93cdb9058deefa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySpeed: 10
+  enemySpeed: 3
   enemyGroundCheckPos: {fileID: 3976677646539376214}
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  player: {fileID: 0}
+  playerDistance: 5
   enemyBodyCollider: {fileID: 704313073}
 --- !u!70 &704313073
 CapsuleCollider2D:
