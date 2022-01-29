@@ -8,7 +8,6 @@ public class SceneContoller : MonoBehaviour
     public GameObject sceneObject;
     //public string nextScene;
     
-
     private void Start()
     {
         sceneObject.SetActive(false);
@@ -43,8 +42,6 @@ public class SceneContoller : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-    
 
     public void NextScene()
     {

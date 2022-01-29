@@ -2542,18 +2542,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 129862750, guid: cea66af9dab29d542874d6e14686062f, type: 3}
-      propertyPath: dieTextObject
-      value: 
-      objectReference: {fileID: 2010982895}
-    - target: {fileID: 129862750, guid: cea66af9dab29d542874d6e14686062f, type: 3}
-      propertyPath: sceneContoller
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 129862750, guid: cea66af9dab29d542874d6e14686062f, type: 3}
-      propertyPath: playerJumpValue
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 129862750, guid: cea66af9dab29d542874d6e14686062f, type: 3}
       propertyPath: scoreController
       value: 
       objectReference: {fileID: 6071617138492857611}
@@ -2561,23 +2549,6 @@ PrefabInstance:
       propertyPath: gameOverTextObject
       value: 
       objectReference: {fileID: 2010982895}
-    - target: {fileID: 129862752, guid: cea66af9dab29d542874d6e14686062f, type: 3}
-      propertyPath: m_UsedByEffector
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2087311042, guid: cea66af9dab29d542874d6e14686062f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2087311044, guid: cea66af9dab29d542874d6e14686062f, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1891772154154414111, guid: cea66af9dab29d542874d6e14686062f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6849814149722255953, guid: cea66af9dab29d542874d6e14686062f,
         type: 3}
       propertyPath: m_RootOrder
@@ -2758,16 +2729,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 678160226, guid: 73cf5f6eae8f64845bd8febec5b8e0bb, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 678160228, guid: 73cf5f6eae8f64845bd8febec5b8e0bb, type: 3}
-      propertyPath: m_Text
-      value: 'Level 0
-
-'
-      objectReference: {fileID: 0}
     - target: {fileID: 986676650330337345, guid: 73cf5f6eae8f64845bd8febec5b8e0bb,
         type: 3}
       propertyPath: m_Name

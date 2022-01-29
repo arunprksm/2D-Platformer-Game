@@ -5,6 +5,8 @@ public class LevelManager : MonoBehaviour
     private static LevelManager instance;
     public static LevelManager Instance { get { return instance;} }
 
+    public string Level1;
+
     private void Awake()
     {
         if (instance == null)
@@ -17,7 +19,13 @@ public class LevelManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    private void Start()
+    {
+        if (GetLevelStatus(Level1) == LevelStatus.Locked)
+        {
+            SetLevelStatus(Level1, LevelStatus.Unlocked);
+        }
+    }
     public LevelStatus GetLevelStatus(string level)
     {
         LevelStatus levelStatus = (LevelStatus) PlayerPrefs.GetInt(level,0);

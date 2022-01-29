@@ -32,6 +32,7 @@ public class EnemyController : MonoBehaviour
         playerPos = player.GetComponent<Transform>();
         currentPos = GetComponent<Transform>().position;
         enemyAnimator = GetComponent<Animator>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void Update()
@@ -57,8 +58,8 @@ public class EnemyController : MonoBehaviour
         {
             //playerdamage value
             playerHealth.TakeDamage(10);
-            
         }
+
         if (collision.gameObject.tag == "DeadLimit")
         {
             Destroy(gameObject);

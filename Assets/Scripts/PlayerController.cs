@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
 
     void PlayerMovement(float playerHorizontal)
     {
+        SoundManager.Instance.PlayerMove(Sounds.PlayerMove);
         if (PlayerIsAlive() && !PlayerCrouch())
         {
             Vector2 playerMovement = transform.position;
@@ -120,7 +121,7 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetFloat("Speed", Mathf.Abs(playerHorizontal));
-
+        
         Vector2 playerFlip = transform.localScale;
         if (playerHorizontal < 0) playerFlip.x = -1f * Mathf.Abs(playerFlip.x);
         else if (playerHorizontal > 0) playerFlip.x = Mathf.Abs(playerFlip.x);
@@ -204,6 +205,7 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PlayerDead()
     {
+        SoundManager.Instance.PlayMusic(Sounds.PlayerDeath);
         deathAnimation = true;
         animator.SetBool("Death", deathAnimation);
         playerAlive = false;

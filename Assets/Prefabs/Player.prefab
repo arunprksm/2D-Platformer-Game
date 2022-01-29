@@ -173,7 +173,7 @@ MonoBehaviour:
   gameOverTextObject: {fileID: 0}
   animator: {fileID: 8578576931202442020}
   playerSpeed: 9
-  playerJumpValue: 20
+  playerJumpValue: 15
   isGrounded: 0
   feetPosition: {fileID: 833933137}
   checkRadius: 0.3
