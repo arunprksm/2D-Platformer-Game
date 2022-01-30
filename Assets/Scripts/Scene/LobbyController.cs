@@ -21,7 +21,7 @@ public class LobbyController : MonoBehaviour
 
     public void PlayButton()
     {
-        SoundManager.Instance.PlaySound(Sounds.ButtonClick);
+        SoundManager.Instance.PlaySFX(Sounds.ButtonClick);
         if (levelSelection.activeSelf)
         {
             //SoundManager.Instance.Play(Sounds.ButtonClick);
@@ -36,7 +36,7 @@ public class LobbyController : MonoBehaviour
 
     public void OptionButton()
     {
-        SoundManager.Instance.PlaySound(Sounds.ButtonClick);
+        SoundManager.Instance.PlaySFX(Sounds.ButtonClick);
         if (optionWindow.activeSelf)
         {
             optionWindow.SetActive(false);

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - DeadLimit
+  - Enemy
   layers:
   - Default
   - TransparentFX

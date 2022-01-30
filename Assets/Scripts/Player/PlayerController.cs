@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public ScoreController scoreController;
-
+    GameControlScript gameControlScript;
     public GameObject gameOverTextObject;
 
     public Animator animator;
@@ -54,6 +54,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        gameControlScript = GetComponent<GameControlScript>();
+
         playerAlive = true;
         gameOverTextObject.SetActive(false);
         SetPlayerSpeed(playerSpeed);
@@ -67,7 +69,7 @@ public class PlayerController : MonoBehaviour
         PlayerMovement(playerHorizontal);
         PlayerFlip(playerHorizontal);
         PlayerCrouch();
-
+       
         //if( something happens)
         //SetPlayerSpeed(playerSpeed);
     }
@@ -104,7 +106,7 @@ public class PlayerController : MonoBehaviour
 
     void PlayerMovement(float playerHorizontal)
     {
-        SoundManager.Instance.PlayerMove(Sounds.PlayerMove);
+        //SoundManager.Instance.PlayerMove(Sounds.PlayerMove);
         if (PlayerIsAlive() && !PlayerCrouch())
         {
             Vector2 playerMovement = transform.position;
@@ -116,7 +118,7 @@ public class PlayerController : MonoBehaviour
     {
         //Guard Clause
         if (!PlayerIsAlive())
-        {
+        { 
             return;
         }
 
@@ -190,11 +192,7 @@ public class PlayerController : MonoBehaviour
         scoreController.IncrementScore(10);
     }
 
-    internal void KillPlayer()
-    {
-        StartCoroutine(PlayerDead());
-    }
-
+        
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "DeadLimit")
@@ -203,9 +201,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            animator.SetBool("Hurt", false);
+        }
+    }
+    public IEnumerator PlayerHurt()
+    {
+        animator.SetBool("Hurt", true);
+        yield return new WaitForSeconds(0.2f);
+        animator.SetBool("Hurt", false);
+    }
+
     public IEnumerator PlayerDead()
     {
-        SoundManager.Instance.PlayMusic(Sounds.PlayerDeath);
+        SoundManager.Instance.PlaySFX(Sounds.PlayerDeath);
         deathAnimation = true;
         animator.SetBool("Death", deathAnimation);
         playerAlive = false;

@@ -74,7 +74,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlaySound(Sounds sound)
+    public void PlaySFX(Sounds sound)
     {
         if (isAudioMute) return;
 

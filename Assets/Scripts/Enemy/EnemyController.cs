@@ -56,8 +56,11 @@ public class EnemyController : MonoBehaviour
         playerController = collision.gameObject.GetComponent<PlayerController>();
         if (playerController != null)
         {
+            StartCoroutine(playerController.PlayerHurt());
+            GameControlScript.health -= 1;
+            
             //playerdamage value
-            playerHealth.TakeDamage(10);
+            //playerHealth.TakeDamage(10);
         }
 
         if (collision.gameObject.tag == "DeadLimit")
