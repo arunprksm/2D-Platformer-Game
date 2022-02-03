@@ -99,14 +99,5 @@ public class EnemyController : MonoBehaviour
         {
             enemyAnimator.SetBool("EnemyRun", false);
         }
-        //if (Vector2.Distance(transform.position, currentPos) <= 0)
-        //{
-        //    enemyAnimator.SetBool("EnemyRun", false);
-        //}
-        //else
-        //{
-        //    transform.position = Vector2.MoveTowards(transform.position, currentPos, enemySpeed * Time.deltaTime);
-        //    enemyAnimator.SetBool("EnemyRun", true);
-        //}
     }
 }

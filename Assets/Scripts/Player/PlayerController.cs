@@ -7,12 +7,11 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public ScoreController scoreController;
-    GameControlScript gameControlScript;
     public GameObject gameOverTextObject;
 
     public Animator animator;
 
-    Rigidbody2D rb;
+    private Rigidbody2D rb;
 
     public float SpeedProperty
     {
@@ -30,46 +29,39 @@ public class PlayerController : MonoBehaviour
 
     private float playerHorizontal;
 
-    [SerializeField]
-    private float playerSpeed;
-    [SerializeField]
-    private float playerJumpValue;
+    [SerializeField] private float playerSpeed;
+    [SerializeField] private float playerJumpValue;
 
-    bool playerAlive;
+    private bool playerAlive;
 
     public bool isGrounded;
     public Transform feetPosition;
     public float checkRadius;
     public LayerMask whatGround;
 
-    float jumpTimeCounter;
+    public float jumpTime, jumpTimeCounter;
+    private bool crouchAnimation, jumpAnimation, deathAnimation;
+    private bool jumpPressed, isJumping, jumpPressing, jumpPressedReleased, crouchPressed;
 
-    public float jumpTime;
-    bool isJumping;
-    bool crouchAnimation, jumpAnimation, deathAnimation;
 
-    bool jumpPressed, jumpPressing, jumpPressedReleased, crouchPressed;
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        gameControlScript = GetComponent<GameControlScript>();
 
         playerAlive = true;
         gameOverTextObject.SetActive(false);
         SetPlayerSpeed(playerSpeed);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         HandleInput();
+        playerFall();
         PlayerJump();
         PlayerMovement(playerHorizontal);
         PlayerFlip(playerHorizontal);
         PlayerCrouch();
-       
+
         //if( something happens)
         //SetPlayerSpeed(playerSpeed);
     }
@@ -86,7 +78,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    bool PlayerIsAlive()
+    private bool PlayerIsAlive()
     {
         return playerAlive;
         //if (playerAlive == true) return true;
@@ -104,7 +96,7 @@ public class PlayerController : MonoBehaviour
         //UpdatePlayerSpeedUI(roundedPlayerSpeed);
     }
 
-    void PlayerMovement(float playerHorizontal)
+    private void PlayerMovement(float playerHorizontal)
     {
         //SoundManager.Instance.PlayerMove(Sounds.PlayerMove);
         if (PlayerIsAlive() && !PlayerCrouch())
@@ -114,23 +106,35 @@ public class PlayerController : MonoBehaviour
             transform.position = playerMovement;
         }
     }
-    void PlayerFlip(float playerHorizontal)
+    private void PlayerFlip(float playerHorizontal)
     {
         //Guard Clause
         if (!PlayerIsAlive())
-        { 
+        {
             return;
         }
 
         animator.SetFloat("Speed", Mathf.Abs(playerHorizontal));
-        
+
         Vector2 playerFlip = transform.localScale;
         if (playerHorizontal < 0) playerFlip.x = -1f * Mathf.Abs(playerFlip.x);
         else if (playerHorizontal > 0) playerFlip.x = Mathf.Abs(playerFlip.x);
         transform.localScale = playerFlip;
     }
 
-    void PlayerJump()
+    private void playerFall()
+    {
+        if (!isGrounded && PlayerIsAlive())
+        {
+            animator.SetBool("Fall", true);
+        }
+        else
+        {
+            animator.SetBool("Fall", false);
+        }
+    }
+
+    private void PlayerJump()
     {
         isGrounded = Physics2D.OverlapCircle(feetPosition.position, checkRadius, whatGround);
 
@@ -171,7 +175,8 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Jump", jumpAnimation);
         }
     }
-    bool PlayerCrouch()
+
+    private bool PlayerCrouch()
     {
         if (crouchPressed && isGrounded == true && PlayerIsAlive())
         {
@@ -192,12 +197,16 @@ public class PlayerController : MonoBehaviour
         scoreController.IncrementScore(10);
     }
 
-        
-    void OnCollisionEnter2D(Collision2D collision)
+    public void PlayerKill()
+    {
+        StartCoroutine(PlayerDead());
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "DeadLimit")
         {
-            StartCoroutine(PlayerDead());
+            PlayerKill();
         }
     }
 
@@ -211,6 +220,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator PlayerHurt()
     {
         animator.SetBool("Hurt", true);
+
         yield return new WaitForSeconds(0.2f);
         animator.SetBool("Hurt", false);
     }

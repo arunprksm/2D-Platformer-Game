@@ -14,6 +14,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource SFX;
     public AudioSource MusicPlay;
     public AudioSource playerMove;
+    public AudioSource playerDeath;
 
 
     public SoundType[] Sounds;
@@ -33,17 +34,19 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        SetGameVolume(0.5f);
+        //SetGameVolume(0.5f);
         PlayMusic(global::Sounds.Music);
     }
 
-    public void SetGameVolume(float _gameVolume)
-    {
-        gameVolume = _gameVolume;
-        SFX.volume = gameVolume;
-        MusicPlay.volume = gameVolume;
-        playerMove.volume = gameVolume;
-    }
+    //public void SetGameVolume(float _gameVolume)
+    //{
+    //    gameVolume = _gameVolume;
+
+    //    SFX.volume = gameVolume;
+    //    MusicPlay.volume = gameVolume;
+    //    playerMove.volume = gameVolume;
+    //    playerDeath.volume = gameVolume;
+    //}
 
     public void PlayMusic(Sounds sound)
     {
@@ -87,9 +90,22 @@ public class SoundManager : MonoBehaviour
         {
             Debug.LogError("Clip not found on soundType: " + sound);
         }
+    }//playerDeath;
+
+    public void PlayerDeath(Sounds sound)
+    {
+        if (isAudioMute) return;
+
+        AudioClip clip = getSoundClip(sound);
+        if (clip != null)
+        {
+            playerDeath.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.LogError("Clip not found on soundType: " + sound);
+        }
     }
-
-
     private AudioClip getSoundClip(Sounds sound)
     {
         SoundType item = Array.Find(Sounds, i => i.soundType == sound);
